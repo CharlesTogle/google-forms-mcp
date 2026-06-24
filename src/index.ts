@@ -9,7 +9,6 @@ import {
   Request
 } from '@modelcontextprotocol/sdk/types.js';
 import { google } from 'googleapis';
-import { OAuth2Client } from 'google-auth-library';
 
 // Get authentication information from environment variables
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -22,7 +21,7 @@ if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
 
 class GoogleFormsServer {
   private server: Server;
-  private oauth2Client: OAuth2Client;
+  private oauth2Client: InstanceType<typeof google.auth.OAuth2>;
   private forms: any;
 
   constructor() {
@@ -49,7 +48,7 @@ class GoogleFormsServer {
 
     // Initialize Google Forms API
     this.forms = google.forms({
-      version: 'v1',
+      version: 'v1' as const,
       auth: this.oauth2Client
     });
 
